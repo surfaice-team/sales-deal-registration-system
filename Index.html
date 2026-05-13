@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deal Registration — Surfaice</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f5f4f0;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 40px 16px 80px;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .logo {
+      display: inline-block;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+    }
+    .logo span { color: #4f46e5; }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.5;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Info banner */
+    .info-banner {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 28px;
+      font-size: 13.5px;
+      color: #3730a3;
+      line-height: 1.55;
+    }
+    .info-banner strong { font-weight: 600; }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #e8e6e0;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0ede8;
+    }
+
+    /* Form fields */
+    .field {
+      margin-bottom: 20px;
+    }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    label .req {
+      color: #e53e3e;
+      margin-left: 2px;
+    }
+    label .hint {
+      font-weight: 400;
+      color: #888;
+      font-size: 12.5px;
+      margin-left: 4px;
+    }
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14.5px;
+      font-family: inherit;
+      color: #1a1a1a;
+      background: #fafafa;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #4f46e5;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 520px) {
+      .field-row { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+    }
+
+    /* Contacts */
+    .contacts-list { display: flex; flex-direction: column; gap: 12px; }
+    .contact-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      align-items: start;
+      padding: 14px;
+      background: #fafafa;
+      border: 1.5px solid #ece9e3;
+      border-radius: 9px;
+    }
+    @media (max-width: 520px) {
+      .contact-item { grid-template-columns: 1fr; }
+    }
+    .contact-item label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #777;
+      margin-bottom: 4px;
+    }
+    .contact-item input {
+      font-size: 13.5px;
+    }
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #aaa;
+      font-size: 18px;
+      padding: 6px;
+      border-radius: 6px;
+      line-height: 1;
+      align-self: center;
+      transition: color 0.15s, background 0.15s;
+    }
+    .remove-btn:hover { color: #e53e3e; background: #fff0f0; }
+    .add-contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border: 1.5px dashed #c7d2fe;
+      border-radius: 8px;
+      background: none;
+      color: #4f46e5;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .add-contact-btn:hover { background: #eef2ff; border-color: #4f46e5; }
+
+    /* Checkbox */
+    .checkbox-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 16px;
+      background: #fafafa;
+      border: 1.5px solid #ece9e3;
+      border-radius: 9px;
+    }
+    .checkbox-field input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      min-width: 17px;
+      margin-top: 2px;
+      accent-color: #4f46e5;
+      cursor: pointer;
+    }
+    .checkbox-field label {
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #444;
+      line-height: 1.55;
+      cursor: pointer;
+      margin: 0;
+    }
+    .checkbox-field label strong { font-weight: 600; color: #1a1a1a; }
+
+    /* Submit */
+    .submit-wrap {
+      text-align: center;
+      margin-top: 8px;
+    }
+    .submit-btn {
+      display: inline-block;
+      padding: 14px 40px;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15.5px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: -0.2px;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 0 2px 8px rgba(79,70,229,0.25);
+    }
+    .submit-btn:hover { background: #4338ca; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
+    .submit-btn:active { transform: scale(0.98); }
+    .submit-btn:disabled {
+      background: #a5b4fc;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .submit-note {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: #999;
+    }
+
+    /* Success / Error states */
+    #success-msg, #error-msg {
+      display: none;
+      padding: 18px 22px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      line-height: 1.55;
+      margin-top: 20px;
+    }
+    #success-msg {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      color: #166534;
+    }
+    #success-msg strong { font-size: 16px; display: block; margin-bottom: 4px; }
+    #error-msg {
+      background: #fff5f5;
+      border: 1.5px solid #fc8181;
+      color: #9b2c2c;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 36px;
+      font-size: 12.5px;
+      color: #bbb;
+    }
+    .footer a { color: #999; text-decoration: none; }
+    .footer a:hover { color: #4f46e5; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">Surf<span>aice</span></div>
+    <h1>Deal Registration</h1>
+    <p class="subtitle">Submit a new account for registration. Surfaice will respond within 5 business days with an Approved, Conditionally Approved, or Conflicted determination.</p>
+  </div>
+
+  <div class="info-banner">
+    <strong>How this works:</strong> Once submitted, your registration will be reviewed against our active pipeline. Approved registrations are valid for <strong>60 days</strong> from the date of approval. If no First Successful Meeting occurs within that period, the approval expires and re-registration will be required.
+  </div>
+
+  <!-- ===================== FORM ===================== -->
+  <!--
+    SETUP INSTRUCTIONS FOR SURFAICE TEAM:
+    1. Go to https://formspree.io and create a free account
+    2. Create a new form and copy your form endpoint (looks like: https://formspree.io/f/abcdefgh)
+    3. Replace YOUR_FORMSPREE_ENDPOINT below with that URL
+    4. Done — submissions will be emailed to the address you registered with
+  -->
+  <form id="reg-form" action="YOUR_FORMSPREE_ENDPOINT" method="POST">
+
+    <!-- Hidden fields for processing -->
+    <input type="hidden" name="_subject" value="🔔 New Deal Registration Request" />
+    <input type="hidden" name="_replyto" id="hidden-replyto" value="" />
+
+    <!-- Section 1: Partner Info -->
+    <div class="card">
+      <div class="card-title">Your Information</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="partner-name">Your Full Name <span class="req">*</span></label>
+          <input type="text" id="partner-name" name="partner_name" required placeholder="Jane Smith" />
+        </div>
+        <div class="field">
+          <label for="partner-email">Your Email <span class="req">*</span></label>
+          <input type="email" id="partner-email" name="partner_email" required placeholder="jane@yourfirm.com" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="partner-company">Your Company / Partnership <span class="req">*</span></label>
+        <input type="text" id="partner-company" name="partner_company" required placeholder="Acme Advisors LLC" />
+      </div>
+
+      <div class="field">
+        <label for="partner-phone">Phone Number <span class="hint">(optional)</span></label>
+        <input type="text" id="partner-phone" name="partner_phone" placeholder="+1 (555) 000-0000" />
+      </div>
+    </div>
+
+    <!-- Section 2: Account Details -->
+    <div class="card">
+      <div class="card-title">Account Registration Details</div>
+
+      <div class="field">
+        <label for="client-name">Prospective Client Name <span class="req">*</span></label>
+        <input type="text" id="client-name" name="client_name" required placeholder="e.g. Westfield Group" />
+      </div>
+
+      <div class="field">
+        <label for="department">
+          Department / Function / Buying Center <span class="req">*</span>
+          <span class="hint">— Be specific</span>
+        </label>
+        <input type="text" id="department" name="department" required
+          placeholder="e.g. Real Estate &amp; Store Development — North America" />
+      </div>
+
+      <div class="field">
+        <label for="engagement-summary">Summary of Intended Engagement <span class="req">*</span></label>
+        <textarea id="engagement-summary" name="engagement_summary" required rows="4"
+          placeholder="Briefly describe how you intend to engage this account, your existing relationship, and why you believe Surfaice is a strong fit."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="est-value">Estimated Deal Value <span class="hint">(optional)</span></label>
+        <input type="text" id="est-value" name="est_deal_value" placeholder="e.g. $50,000/year" />
+      </div>
+    </div>
+
+    <!-- Section 3: Key Contacts -->
+    <div class="card">
+      <div class="card-title">Key Contacts You Intend to Approach</div>
+      <p style="font-size:13px;color:#888;margin-bottom:16px;line-height:1.5;">
+        Add the names and titles of the people you plan to engage at this account. At least one contact is required.
+      </p>
+
+      <div class="contacts-list" id="contacts-list">
+        <!-- Contact row 1 (default) -->
+        <div class="contact-item" id="contact-0">
+          <div>
+            <label for="contact-name-0">Full Name <span class="req">*</span></label>
+            <input type="text" id="contact-name-0" name="contact_name[]" required placeholder="Alex Johnson" />
+          </div>
+          <div>
+            <label for="contact-title-0">Title / Role <span class="req">*</span></label>
+            <input type="text" id="contact-title-0" name="contact_title[]" required placeholder="VP of Real Estate" />
+          </div>
+          <button type="button" class="remove-btn" onclick="removeContact(0)" title="Remove" aria-label="Remove contact">×</button>
+        </div>
+      </div>
+
+      <button type="button" class="add-contact-btn" onclick="addContact()">
+        <span>+</span> Add Another Contact
+      </button>
+    </div>
+
+    <!-- Section 4: Certification -->
+    <div class="card">
+      <div class="card-title">Certification</div>
+      <div class="checkbox-field">
+        <input type="checkbox" id="certify" name="certified" value="yes" required />
+        <label for="certify">
+          I certify that the information provided is accurate and complete. I understand that Surfaice will respond within <strong>5 business days</strong>, and that approval is valid for <strong>60 days</strong> from the date of approval. I understand that commission is only payable if a deal closes under the terms of my agreement with Surfaice.
+        </label>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn" id="submit-btn">Submit Registration</button>
+      <p class="submit-note">You'll receive a copy of this submission at your email address.</p>
+    </div>
+
+    <div id="success-msg">
+      <strong>✓ Registration Submitted</strong>
+      Thank you — your deal registration has been received. Surfaice will review it and respond to <span id="confirm-email"></span> within 5 business days with an Approved, Conditionally Approved, or Conflicted determination.
+    </div>
+    <div id="error-msg">
+      Something went wrong submitting your registration. Please try again, or email your registration directly to <a href="mailto:joe@surfaice.pro">joe@surfaice.pro</a>.
+    </div>
+
+  </form>
+
+  <div class="footer">
+    &copy; 2026 Surfaice &nbsp;·&nbsp; <a href="mailto:joe@surfaice.pro">joe@surfaice.pro</a>
+  </div>
+
+</div>
+
+<script>
+  let contactCount = 1;
+
+  // Keep _replyto in sync with email field
+  document.getElementById('partner-email').addEventListener('input', function() {
+    document.getElementById('hidden-replyto').value = this.value;
+    document.getElementById('confirm-email').textContent = this.value;
+  });
+
+  function addContact() {
+    const idx = contactCount++;
+    const list = document.getElementById('contacts-list');
+    const div = document.createElement('div');
+    div.className = 'contact-item';
+    div.id = 'contact-' + idx;
+    div.innerHTML = `
+      <div>
+        <label for="contact-name-${idx}">Full Name <span class="req">*</span></label>
+        <input type="text" id="contact-name-${idx}" name="contact_name[]" required placeholder="Full name" />
+      </div>
+      <div>
+        <label for="contact-title-${idx}">Title / Role <span class="req">*</span></label>
+        <input type="text" id="contact-title-${idx}" name="contact_title[]" required placeholder="Title" />
+      </div>
+      <button type="button" class="remove-btn" onclick="removeContact(${idx})" title="Remove" aria-label="Remove contact">×</button>
+    `;
+    list.appendChild(div);
+    div.querySelector('input').focus();
+  }
+
+  function removeContact(idx) {
+    const item = document.getElementById('contact-' + idx);
+    const list = document.getElementById('contacts-list');
+    if (list.children.length <= 1) {
+      alert('At least one contact is required.');
+      return;
+    }
+    if (item) item.remove();
+  }
+
+  // Form submission with Formspree (AJAX)
+  const form = document.getElementById('reg-form');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Basic validation: ensure at least one contact
+    const contactNames = form.querySelectorAll('input[name="contact_name[]"]');
+    const hasContact = Array.from(contactNames).some(i => i.value.trim() !== '');
+    if (!hasContact) {
+      alert('Please add at least one key contact.');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        form.style.display = 'none';
+        document.querySelector('.info-banner').style.display = 'none';
+        const successEl = document.getElementById('success-msg');
+        successEl.style.display = 'block';
+        // Scroll to success
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (err) {
+      document.getElementById('error-msg').style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Registration';
+    }
+  });
+</script>
+</body>
+</html>
